@@ -21,7 +21,7 @@ if ( not (-s $ARGV[0]) ) {
 
 $mw = MainWindow->new;
 $mw->title($ARGV[0]);
-$mw->withdraw;
+$mw->waitVisibility;
 
 my $stat = do $ARGV[0];
 if ( not defined $stat and $@) {
@@ -30,5 +30,4 @@ if ( not defined $stat and $@) {
     exit 2;
 };
 
-$mw->deiconify;
 MainLoop;

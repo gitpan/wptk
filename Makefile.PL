@@ -1,4 +1,4 @@
-$VERSION = '0.9.6';
+$VERSION = '0.9.7';
 
 use ExtUtils::MakeMaker;
 
@@ -23,7 +23,7 @@ sub MY::post_initialize {
 
     my ($config) = @_;
 
-    my $perl = $config->{FULLPERL};
+    my $perl = $config->{PERLPREFIX} . '/bin/perl';
     my $root = dirname( $perl );
     system "$perl -ne 's\\WPTKROOT\\$root\\;s\\WPTKVERSION\\$VERSION\\; print' < wptk.c.template > wptk.c";
     die $@ if @$;

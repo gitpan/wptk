@@ -16,3 +16,11 @@ Then read wptk.pod for more details.
 Steve Lidie
 sol0@lehigh.edu
 
+
+PS: C compiler hints:
+
+Linux:	PATH_MAX is defined in <sys/param.h> rather than <sys/syslimits.h>.
+
+IRIX:	PATH_MAX is defined in <internal/limits_core.h> rather than <sys/syslimits.h>.
+	errno is defined in <errno.h> rather than <sys/errno.h>.
+

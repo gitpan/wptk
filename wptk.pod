@@ -61,7 +61,7 @@ The default Perl/Tk template is this:
 
  $mw = MainWindow->new;
  $mw->title($ARGV[0]);
- $mw->withdraw;
+ $mw->waitVisibility;
 
  my $stat = do $ARGV[0];
  if ( not defined $stat and $@) {
@@ -70,7 +70,6 @@ The default Perl/Tk template is this:
      exit 2;
  };
 
- $mw->deiconify;
  MainLoop;
 ---
 
@@ -114,7 +113,7 @@ above template.
 
 sol0@Lehigh.EDU
 
-Copyright (C) 2003 - 2003, Steve Lidie. All rights reserved.
+Copyright (C) 2003 - 2004, Steve Lidie. All rights reserved.
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

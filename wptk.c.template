@@ -8,7 +8,7 @@ The varibale $mw is global and is useable by the user's program.
 
 sol0@lehigh.edu
 
-Copyright (C) 2003 - 2003, Steve Lidie. All rights reserved.
+Copyright (C) 2003 - 2004, Steve Lidie. All rights reserved.
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
@@ -33,10 +33,11 @@ int main (int argc, char *argv[]) {
   char perlargs [ PATH_MAX + 1 ] = "-w";
   struct stat stbuf;
 
-  /* First argument may be the Perl/Tk file name or a string containing
-     one or more space-separated Perl arguments.  So the file name is
-     either the first or second argument.  Any arguments after the file
-     name are Tk options.
+  /*
+    First argument may be the Perl/Tk file name or a string containing
+    one or more space-separated Perl arguments.  So the file name is
+    either the first or second argument.  Any arguments after the file
+    name are Tk options.
   */
 
   --argc;
