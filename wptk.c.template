@@ -48,19 +48,24 @@ int main (int argc, char *argv[]) {
   }
 
   if ( argc == 0 ) {
-    strcpy( file, "-" );	/* if stdin */
+    strncpy( file, "-", PATH_MAX ); /* if stdin */
+    file[PATH_MAX] = '\0';
     --argc;
   } else if ( argc == 1  ) {	/* only a Perl/Tk file name */
-    strcpy( file, argv[0] );
+    strncpy( file, argv[0], PATH_MAX );
+    file[PATH_MAX] = '\0';
   } else if ( argc >= 1 && ! stat( argv[0], &stbuf ) ) { /* no Perl args */
-    strcpy( file, argv[0] );
+    strncpy( file, argv[0], PATH_MAX );
+    file[PATH_MAX] = '\0';
     --argc;
     *++argv;			/* skip Perl/Tk file name */
   } else {
-    strcpy( perlargs, argv[0] );
+    strncpy( perlargs, argv[0], PATH_MAX );
+    perlargs[PATH_MAX] = '\0';
     --argc;
     *++argv;			/* skip Perl args */
-    strcpy( file, argv[0] );
+    strncpy( file, argv[0], PATH_MAX );
+    file[PATH_MAX] = '\0';
     --argc;
     *++argv;			/* skip Perl/Tk file name */
   }

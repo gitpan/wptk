@@ -5,8 +5,6 @@ use strict;
 
 #print "wptk.template ARGV=@ARGV!\n";
 
-$mw = MainWindow->new;
-
 if ( $ARGV[0] eq '-' ) {
     my $stdin = "/tmp/wptk.$$";
     open F, ">$stdin" or die "wptk.template: cannot write '$stdin': !";
@@ -16,13 +14,21 @@ if ( $ARGV[0] eq '-' ) {
     close F or die "wptk.template: cannot close $stdin: $!";
     $ARGV[0] = $stdin;
 }
+if ( not (-s $ARGV[0]) ) {
+    print STDERR "wptk: No such file '$ARGV[0]'.\n";
+    exit 1;
+}
+
+$mw = MainWindow->new;
+$mw->title($ARGV[0]);
+$mw->withdraw;
 
 my $stat = do $ARGV[0];
-if ( not defined $stat ) {
-    print $@ if $@;
-    print $! if $!;
+if ( not defined $stat and $@) {
+    print "$@\n";
     $mw->destroy;
-    exit 1;
+    exit 2;
 };
 
+$mw->deiconify;
 MainLoop;

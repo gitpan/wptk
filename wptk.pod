@@ -1,18 +1,18 @@
 
 =head1 NAME
 
-wptk - a poor man's windowing shell (wish) for Perl/Tk
+B<wptk> - a poor man's windowing shell (wish) for Perl/Tk
 
 =head1 SYNOPSIS
 
 =over 4
 
-=item wptk pTk-program-file [ Tk options ]
+=item B<wptk> I<pTk-program-file> [ Tk options ]
 
 Run the Perl/Tk program contained in the file I<pTk-program-file>, 
 passing it optional Tk options.
 
-=item pTk-program-file [ Tk options ]
+=item I<pTk-program-file> [ Tk options ]
 
 Run an executable Perl/Tk program file as above with its first line
 in standard "shebang" format:
@@ -23,7 +23,7 @@ in standard "shebang" format:
 
 =head1 DESCRIPTION
 
-wptk obviates the need to write standard perl/Tk boiler-plate code.  Every
+B<wptk> obviates the need to write standard Perl/Tk boiler-plate code.  Every
 pTk program starts with:
 
  use Tk;
@@ -32,19 +32,18 @@ pTk program starts with:
  ...
  MainLoop;
 
-wptk provides this template code for you automatically, then sources
+B<wptk> provides this template code for you automatically, then sources
 your pTk code just before the MainLoop statement.
 
-By default, -w is enabled.  You can change this in wptk.c.template.
+By default, -w is enabled.  You can change this in I<wptk.c.template>.
 
 The default Perl/Tk template is this:
 
+ ---
  use Carp;
  use Tk;
  use vars qw/ $mw /;
  use strict;
-
- $mw = MainWindow->new;
 
  if ( $ARGV[0] eq '-' ) {
      my $stdin = "/tmp/wptk.$$";
@@ -55,18 +54,27 @@ The default Perl/Tk template is this:
      close F or die "wptk.template: cannot close $stdin: $!";
      $ARGV[0] = $stdin;
  }
+ if ( not (-s $ARGV[0]) ) {
+     print STDERR "wptk: No such file '$ARGV[0]'.\n";
+     exit 1;
+ }
+
+ $mw = MainWindow->new;
+ $mw->title($ARGV[0]);
+ $mw->withdraw;
 
  my $stat = do $ARGV[0];
- if ( not defined $stat ) {
-     print $@ if $@;
-     print $! if $!;
+ if ( not defined $stat and $@) {
+     print "$@\n";
      $mw->destroy;
-     exit 1;
+     exit 2;
  };
 
+ $mw->deiconify;
  MainLoop;
+---
 
-By default the MainWindow is $mw, which can be changed in the
+By default the MainWindow is B<$mw>, which can be changed in the
 above template.
 
 =head1 EXAMPLE
