@@ -1,0 +1,8 @@
+Makefile.PL
+MANIFEST
+README
+test.pl
+wptk.pod
+wptk.c.template
+wptk.template
+META.yml                                Module meta-data (added by MakeMaker)

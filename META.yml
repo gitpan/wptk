@@ -1,0 +1,10 @@
+#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
+name:         wptk
+version:      0.9.4
+version_from: Makefile.PL
+installdirs:  site
+requires:
+    Tk:                            8.0.0
+
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.13

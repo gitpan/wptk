@@ -1,0 +1,118 @@
+
+=head1 NAME
+
+wptk - a poor man's windowing shell (wish) for Perl/Tk
+
+=head1 SYNOPSIS
+
+=over 4
+
+=item wptk pTk-program-file [ Tk options ]
+
+Run the Perl/Tk program contained in the file I<pTk-program-file>, 
+passing it optional Tk options.
+
+=item pTk-program-file [ Tk options ]
+
+Run an executable Perl/Tk program file as above with its first line
+in standard "shebang" format:
+
+#!/usr/local/bin/wptk -perlargs
+
+=back
+
+=head1 DESCRIPTION
+
+wptk obviates the need to write standard perl/Tk boiler-plate code.  Every
+pTk program starts with:
+
+ use Tk;
+ ...
+ $mw = Mainwindow->new;
+ ...
+ MainLoop;
+
+wptk provides this template code for you automatically, then sources
+your pTk code just before the MainLoop statement.
+
+By default, -w is enabled.  You can change this in wptk.c.template.
+
+The default Perl/Tk template is this:
+
+ use Carp;
+ use Tk;
+ use vars qw/ $mw /;
+ use strict;
+
+ $mw = MainWindow->new;
+
+ if ( $ARGV[0] eq '-' ) {
+     my $stdin = "/tmp/wptk.$$";
+     open F, ">$stdin" or die "wptk.template: cannot write '$stdin': !";
+     while ( $_ = <STDIN>  ) {
+         print F $_;
+     }
+     close F or die "wptk.template: cannot close $stdin: $!";
+     $ARGV[0] = $stdin;
+ }
+
+ my $stat = do $ARGV[0];
+ if ( not defined $stat ) {
+     print $@ if $@;
+     print $! if $!;
+     $mw->destroy;
+     exit 1;
+ };
+
+ MainLoop;
+
+By default the MainWindow is $mw, which can be changed in the
+above template.
+
+=head1 EXAMPLE
+
+ #!/usr/local/bin/wptk
+
+ use Tk::widgets qw/Trace TraceText/;
+ use strict;
+
+ my $tt = $mw->Scrolled( 'TraceText', -textvariable => \my $frog )->grid;
+ $tt->focus;
+
+ $mw->traceVariable( \$frog, 'wu', [ \&tracefrog, $mw, \$frog ] );
+
+ $frog = "Frogs lacking lipophores are blue.";
+
+ my $d =  $mw->Button( -text => 'Destroy', -command => [ destroy => $tt ] );
+ my $q =  $mw->Button( -text => 'Quit',    -command => \&exit );
+ $d->grid( $q );
+
+ sub tracefrog {
+
+     my( $index, $value, $op ) = @_;
+
+     print "Final " if $op eq 'u';
+     print "User trace: $value";
+     return $value;
+
+ }
+
+=head1 BUGS
+
+ . Doesn't search PATH for the Perl/Tk input file.
+ . Leaves scratch files in /tmp IFF input is standard input.
+
+=head1 AUTHOR
+
+sol0@Lehigh.EDU
+
+Copyright (C) 2003 - 2003, Steve Lidie. All rights reserved.
+
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+=head1 KEYWORDS
+
+wish, Perl/Tk, Tcl/Tk, windowing shell
+
+=cut
